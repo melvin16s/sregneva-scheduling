@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Welcome to Sregnava's Scheduler{% endblock %}</h1>
+    <style>
+        a:link {
+          text-decoration: none;
+        }
+        a:visited {
+          text-decoration: none;
+        }
+        a:hover {
+          text-decoration: underline;
+        }
+        a:active {
+          text-decoration: underline;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div style="padding: 10px; margin-top: 30px; text-align: center;
+    border: 2px solid #377BA8; border-radius: 5px; background-color: #e6edf5">
+        <a href="{{ url_for('blog.go_to_index') }}">Proceed to input schedule</a>
+    </div>
+    <div style="padding: 10px; margin-top: 30px; text-align: center;
+    border: 2px solid #377BA8; border-radius: 5px; background-color: #e6edf5">
+        <a href="{{ url_for('blog.go_to_index') }}">See full schedule</a>
+    </div>
+    <div style="padding: 10px; margin-top: 30px; text-align: center;
+        border: 2px solid #377BA8; border-radius: 5px; background-color: #e6edf5">
+            <a href="{{ url_for('blog.go_to_admin') }}">Proceed to admin menu</a>
+    </div>
+
+{% endblock %}

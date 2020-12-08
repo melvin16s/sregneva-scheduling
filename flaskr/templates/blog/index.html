@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Input Schedule{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<article>
+    <div>
+        <p>
+        Dokter Umum Available: <b>{{jdokterUmum}}</b><br>
+        Dokter Spesialis Available: <b>{{jdokterSpesial}}</b><br>
+        Nurse Available: <b>{{jnurse}}</b><br>
+        Shift Available: <b>{{jshift}}</b><br>
+                        Hari Available: <b>{{jday}}</b><br>
+        </p>
+    </div>
+    <hr>
+    <div> <!-- Div header -->
+        <form method="post" action="{{ url_for('blog.schedule') }}">
+            <label for="doctor">Pilihan Dokter</label>
+            <select id="doctor" name="doctor">
+                <option value="Umum">Doktor Umum</option>
+                <option value="Spesialis">Doktor Spesialis</option>
+            </select>
+            <br>
+            <label for="day">Pilihan Hari</label>
+            <select id = "day" name="day">
+                {% if jday == "1": %}
+                <option value="day0">Monday</option>
+                {% elif jday == "2": %}
+                <option value="day0">Monday</option>
+                <option value="day1">Tuesday</option>
+                {% elif jday == "3": %}
+                <option value="day0">Monday</option>
+                <option value="day1">Tuesday</option>
+                <option value="day2">Wednesday</option>
+                {% elif jday == "4": %}
+                <option value="day0">Monday</option>
+                <option value="day1">Tuesday</option>
+                <option value="day2">Wednesday</option>
+                <option value="day3">Thursday</option>
+                {% elif jday == "5": %}
+                <option value="day0">Monday</option>
+                <option value="day1">Tuesday</option>
+                <option value="day2">Wednesday</option>
+                <option value="day3">Thursday</option>
+                <option value="day4">Friday</option>
+                {% elif jday == "6": %}
+                <option value="day0">Monday</option>
+                <option value="day1">Tuesday</option>
+                <option value="day2">Wednesday</option>
+                <option value="day3">Thursday</option>
+                <option value="day4">Friday</option>
+                <option value="day5">Saturday</option>
+                {% elif jday == "7": %}
+                <option value="day0">Monday</option>
+                <option value="day1">Tuesday</option>
+                <option value="day2">Wednesday</option>
+                <option value="day3">Thursday</option>
+                <option value="day4">Friday</option>
+                <option value="day5">Saturday</option>
+                <option value="day6">Sunday</option>
+                {% endif %}
+
+            </select>
+            <label for="symptoms">Symptoms</label>
+            <textarea name="symptoms" id="symptoms"></textarea>
+            <input type="submit" name="Schedule" value="Schedule">
+        </form>
+    </div>
+</article>
+
+{% endblock %}

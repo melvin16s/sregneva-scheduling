@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}List Schedule{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    <p>
+        DOCTOR REQUESTED: {{doctor}} <br>
+        {% if day == "day0": %}
+        DAYS: Monday <br>
+        {% elif day == "day1": %}
+        DAYS: Tuesday <br>
+        {% elif day == "day2": %}
+        DAYS: Wednesday <br>
+        {% elif day == "day3": %}
+        DAYS: Thursday <br>
+        {% elif day == "day4": %}
+        DAYS: Friday <br>
+        {% elif day == "day5": %}
+        DAYS: Saturday <br>
+        {% elif day == "day6": %}
+        DAYS: Sunday <br>
+        {% endif %}
+<!--        {{ globalT }}-->
+        {% if shift1 == "" and shift2 == "" and shift3 == "" and shift4 == "": %}
+            <h3> Schedule could not be found! </h3>
+            <h4> Please reschedule for another day! </h4>
+        {% else: %}
+
+        <h3> We Found a Match: </h3>
+        <h4> Available: </h4>
+        <ul>
+            {% if shift1 != "" %}
+            {% if (doctor == "Umum" and ("Specialist" not in doctor1)) or (doctor == "Spesialis" and ("Specialist" in doctor1)) %}
+<!--            umum = true                      umum = true-->
+<!--            spesialis = false                spesialis = false-->
+            <li> {{ shift1 }}
+                <ul>
+                    <li> {{ nurse1 }} || {{ doctor1 }} </li>
+                </ul>
+            </li>
+            {% endif %}
+            {% endif %}
+            {% if shift2 != "" %}
+            {% if (doctor == "Umum" and ("Specialist" not in doctor2)) or (doctor == "Spesialis" and ("Specialist" in doctor2)) %}
+            <li> {{ shift2 }}
+                <ul>
+                    <li> {{ nurse2 }}  || {{ doctor2 }} </li>
+                </ul>
+            </li>
+            {% endif %}
+            {% endif %}
+            {% if shift3 != "" %}
+            {% if (doctor == "Umum" and ("Specialist" not in doctor3)) or (doctor == "Spesialis" and ("Specialist" in doctor3)) %}
+            <li> {{ shift3 }}
+                <ul>
+                    <li> {{ nurse3 }}  || {{ doctor3 }} </li>
+                </ul>
+            </li>
+            {% endif %}
+            {% endif %}
+            {% if shift4 != "" %}
+            {% if (doctor == "Umum" and ("Specialist" not in doctor4)) or (doctor == "Spesialis" and ("Specialist" in doctor4)) %}
+            <li> {{ shift4 }}
+                <ul>
+                    <li> {{ nurse4 }}  || {{ doctor4 }} </li>
+                </ul>
+            </li>
+            {% endif %}
+            {% endif %}
+        </ul>
+        {% endif %}
+    </p>
+
+<!--        {% print(globalT.split()) %}-->
+    </p>
+    <a href="{{url_for('blog.index')}}">Back to Index</a>
+{% endblock %}

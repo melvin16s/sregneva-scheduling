@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Admin Page{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<article>
+        <div> <!-- Div header -->
+            <form method="post" action="{{ url_for('blog.admin') }}">
+                <label for="jdokterUmum">Jumlah Dokter Umum</label>
+                <input type="text" id="jdokterUmum" name="jdokterUmum">
+
+                <label for="jdokterSpesial">Jumlah Dokter Spesialis</label>
+                <input type="text" id="jdokterSpesial" name="jdokterSpesial">
+
+                <label for="jnurse">Jumlah Nurse</label>
+                <input type="text" id="jnurse" name="jnurse">
+
+                <label for="jshift">Jumlah Shift</label>
+                <label for="jshift" style="font-size: 10px">Maksimal 4 shift</label>
+                <input type="text" id="jshift" name="jshift">
+
+
+                <label for="jday">Jumlah Day</label>
+                <input type="text" id="jday" name="jday">
+
+                <input type="submit" name="submit" value="Submit">
+            </form>
+            <p style="font-size: 12px">If there is no value, previously inserted value will be used.</p>
+        </div>
+    </article>
+
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Thank you!{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    <div>
+        Please give us your feedback and click <a href="{{ url_for('blog.home') }}"here to go back
+    </div>
+<!--    <a href="{{url_for('blog.go_to_index')}}">Back to Index</a>-->
+{% endblock %}
