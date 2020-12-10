@@ -5,46 +5,23 @@
 {% endblock %}
 
 {% block content %}
-    <p>
-        DOCTOR REQUESTED: {{doctor}} <br>
-        {% if day == "day0": %}
-        DAYS: Monday <br>
-        {% elif day == "day1": %}
-        DAYS: Tuesday <br>
-        {% elif day == "day2": %}
-        DAYS: Wednesday <br>
-        {% elif day == "day3": %}
-        DAYS: Thursday <br>
-        {% elif day == "day4": %}
-        DAYS: Friday <br>
-        {% elif day == "day5": %}
-        DAYS: Saturday <br>
-        {% elif day == "day6": %}
-        DAYS: Sunday <br>
-        {% endif %}
-<!--        {{ globalT }}-->
         <h3> Available: </h3>
-        <ul>
-            <li> {{ shift1 }}
-                <ul>
-                    <li> {{ nurse1 }} || {{ doctor1 }} </li>
-                </ul>
-            </li>
-            <li> {{ shift2 }}
-                <ul>
-                    <li> {{ nurse2 }}  || {{ doctor2 }} </li>
-                </ul>
-            </li>
-            <li> {{ shift3 }}
-                <ul>
-                    <li> {{ nurse3 }}  || {{ doctor3 }} </li>
-                </ul>
-            </li>
+        {% for list_day in list_result: %}
+            {% for item in list_day: %}
+                {% if item == "Monday" or item == "Tuesday" or item == "Wednesday" or item == "Thursday" or item == "Friday" or item == "Saturday" or item == "Sunday": %}
+                    <b>{{ item }}</b>
+                {% elif "Shift" in item: %}
+                    <br> &nbsp&nbsp&nbsp{{ item }} <br>
+                {% elif "Nurse" in item: %}
+                    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                    {{ item }} ||
+                {% else: %}
+                    {{ item }}
+                {% endif %}
 
-        </ul>
-    </p>
-
-<!--        {% print(globalT.split()) %}-->
-    </p>
+            {% endfor %}
+            <br><br>
+        {% endfor %}
+    <br>
     <a href="{{url_for('blog.index')}}">Back to Index</a>
 {% endblock %}
