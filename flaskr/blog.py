@@ -83,6 +83,16 @@ def admin():
                            jdokterSpesial=session['jdokterSpesial'], jnurse=session['jnurse'],
                            jshift=session['jshift'], jday=session['jday'])
 
+@bp.route('/fullsched')
+def fullsched():
+    print("inFunct")
+    main(True, False, False)
+
+    list_schedule = session['list_result']
+    # print(list_schedule)
+
+    return render_template('blog/fullschedule.html', list_result = list_schedule, counter = 0)
+
 
 @bp.route('/schedule', methods=('GET', 'POST'))
 def schedule():
@@ -94,6 +104,9 @@ def schedule():
         req = day.replace('day', '')
 
 # to check whether there is input
+
+
+
         if doctor != "":
             session['doctor'] = doctor
         if day != "":
@@ -107,7 +120,8 @@ def schedule():
         print(doctor, req, day)
         print(session['doctor'], session['req'], session['symptoms'])
 
-        main(True, False, False)
+        main(False, True, False)
+
         print('a')
         session['globalT'] = string_output_global
 
@@ -115,7 +129,7 @@ def schedule():
 
 
 
-        # get 3 different shifts from continuous string
+        # get 4 different shifts from continuous string
         checkDay = False
         tempDay = ""
         temp_get_1 = ""
@@ -318,31 +332,55 @@ class SolutionPrinter(cp_model.CpSolverSolutionCallback):
         self._num_shifts = num_shifts
         self._num_doctor_general = num_doctor_general
 
+    def day_converter(day):
+        if day % 7 == 0:
+            return "Monday"
+        elif day % 7 == 1:
+            return "Tuesday"
+        elif day % 7 == 2:
+            return "Wednesday"
+        elif day % 7 == 3:
+            return "Thursday"
+        elif day % 7 == 4:
+            return "Friday"
+        elif day % 7 == 5:
+            return "Saturday"
+        elif day % 7 == 6:
+            return "Sunday"
+
     def on_solution_callback(self):
-        string_output = ""
+        list_result = []
         for d in range(self._num_days):
-            string_output += ("Day " + str(d) + "\n" + "!")
-            string_temp2 = ""
+            list_day = []
+            string_day = SolutionPrinter.day_converter(d)
+            list_day.append(string_day)
+            #             print(list_day)
             for s in range(self._num_shifts):
-                string_temp2 += ("\tShift " + str(s) + "\n@")
+                string_shift = "Shift " + str(s + 1)
+                list_day.append(string_shift)
+                #                 print(list_day)
                 is_nurse_working = False
                 is_doctor_working = False
-                string_temp3 = ""
                 for n in range(self._num_nurses):
                     if self.Value(self._nurse_shifts[(n, d, s)]):
                         is_nurse_working = True
-                        string_temp3 += ("\t\tNurse " + str(n) + " #")
+                        string_nurse = "Nurse " + str(n + 1)
+                        list_day.append(string_nurse)
                 for n in range(self._num_doctors):
                     if self.Value(self._doctor_shifts[(n, d, s)]):
                         is_doctor_working = True
                         if int(n) > self._num_doctor_general - 1:
-                            string_temp3 += (" Doctor " + str(n) + " (Specialist)\n" + "$")
+                            string_doctor = "Doctor " + str(n + 1) + " (Specialist)"
                         else:
-                            string_temp3 += (" Doctor " + str(n) + "\n" + "$")
-                string_temp2 += string_temp3
-            string_output += string_temp2
+                            string_doctor = "Doctor " + str(n + 1)
+                        list_day.append(string_doctor)
+            print(list_day)
+            list_result.append(list_day)
+
+        session['list_result'] = list_result
+        # list_result.extend(list_day)
         self.StopSearch()
-        print(string_output)
+        # print("==="+list_result)
 
 
 class SolutionPrinterRequestedDay(cp_model.CpSolverSolutionCallback):
@@ -567,18 +605,18 @@ def main(printAll, requestDate, requestBoth):
     print("C")
     # Solver
     solver = cp_model.CpSolver()
+    print("test")
     solver.parameters.linearization_level = 0
-
-
-    solution_printer = SolutionPrinter(nurse_shifts, num_nurses, doctor_shifts, num_doctors,
-                                       num_days, num_shifts, num_doctor_general)
-    solver.SearchForAllSolutions(model, solution_printer)
+    print("test2")
+    # solution_printer = SolutionPrinter(nurse_shifts, num_nurses, doctor_shifts, num_doctors,
+    #                                    num_days, num_shifts, num_doctor_general)
+    # solver.SearchForAllSolutions(model, solution_printer)
 
     if printAll:
         print("fk")
-        # solution_printer = SolutionPrinter(nurse_shifts, num_nurses, doctor_shifts, num_doctors,
-        #                                    num_days, num_shifts, num_doctor_general)
-        # solver.SearchForAllSolutions(model, solution_printer)
+        solution_printer = SolutionPrinter(nurse_shifts, num_nurses, doctor_shifts,
+                                           num_doctors, num_days, num_shifts, num_doctor_general)
+        solver.SolveWithSolutionCallback(model, solution_printer)
 
     elif requestDate:
         print("D")
